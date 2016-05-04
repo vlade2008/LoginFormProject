@@ -4,7 +4,8 @@ import {Well,
 		FormGroup,
 		HelpBlock,
 		ControlLabel,
-		Button} from 'react-bootstrap'
+		Button,
+		ButtonGroup} from 'react-bootstrap'
 
 export default  class TodoApp extends React.Component{
  constructor(props){
@@ -20,9 +21,7 @@ export default  class TodoApp extends React.Component{
  		const wellStyle={
 
  			width:400,
- 			max-height:'100%',
- 			position:'relative',
- 			height:'auto',
+ 			height:400,
  			marginLeft:'auto',
  			marginRight:'auto'
  		};
@@ -52,8 +51,10 @@ export default  class TodoApp extends React.Component{
 		         		<HelpBlock></HelpBlock>
 		         	</FormGroup>
 		         	<div style={btnstyle}>
-			         	<Button bsStyle="primary" type="submit">Login</Button>
-			         	<Button bsStyle="info" type="button" onClick={this.goToRegister}>Register</Button>
+		         		<ButtonGroup>
+				         	<Button bsStyle="primary" type="submit">Login</Button>
+				         	<Button bsStyle="info" type="button" onClick={this.goToRegister}>Register</Button>
+				         </ButtonGroup>
 		         	</div>
 		         </form>
 	         </Well>
