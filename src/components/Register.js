@@ -19,7 +19,7 @@ import classnames from 'classnames'
  constructor(props){
      super(props);
      this.state={
-     	
+     	movie:{}
      };
 
      this.validatorTypes = strategy.createSchema(
@@ -29,13 +29,14 @@ import classnames from 'classnames'
 	     		email:'required'	,
 	     		password:'required',
 	     		gender:'required',
-	     		food:'required'
+	     		food:'required',
+	     		movie:'required|moviesrule'
 	     	},
 	     	{
 	     		"required":"The field: attribute is required!"
 	     	},
-	     	(validation)=>{
-	     		validation.setAttributeNames({
+	     	(validator)=>{
+	     		validator.setAttributeNames({
 	     			lastName:'lastName',
 	     			firstName:'firstName',
 	     			email:'email',
@@ -43,6 +44,18 @@ import classnames from 'classnames'
 	     			gender:'gender',
 	     			food:'food'
 	     		});
+
+	     		validator.constructor.registerAsync('moviesrule',(movie, attribute, req, passes)=> {
+	     			var counter = 0;
+	     			for(var key in movie){
+	     				if (movie[key])
+	     					counter++;
+	     			}
+	     			if (counter==0) 
+	     				passes(false,'Please select one movie');
+	     			else
+	     				passes();
+	     		})
 	     	}
      	);
 
@@ -198,37 +211,37 @@ import classnames from 'classnames'
 					      <HelpBlock>{this.getClasses('gender')}</HelpBlock>
 					    </FormGroup>
 					    <ControlLabel>Movie</ControlLabel>
-					    <FormGroup >
-					      <Checkbox  inline name="movie" value="Probinsyano"
-					      	checked={this.state.movie === 'Probinsyano'}
-					      	onClick={()=>{
+					    <FormGroup validationState={this.getClasses('movie')}>
+					      <Checkbox inline checked={this.state.movie['harry']===1}
+					       onClick={()=>{
+					       		var movie = this.state.movie;
+					       		if (movie['harry']===1)
+					       			movie['harry']=undefined;
+					       		else
+					       			movie['harry']=1;
 
-
-					      			if (this.state.movie==='Probinsyano') {
-					      				this.setState({'movie':''})
-					      			}else{
-					      				this.setState({'movie':'Probinsyano'})
-					      			}
-					      			
-					      		}
-					      	}
-					      >
-					        Probinsyano
-					      </Checkbox>
-					      <Checkbox inline name="movie2" value="LoveStory"
-					      	checked={this.state.movie2 === 'LoveStory'}
-					      	onClick={()=>{
-					      			if (this.state.movie2==='LoveStory') {
-					      				this.setState({'movie2':''})
-					      			}else{
-					      				this.setState({'movie2':'LoveStory'})
-					      			}
-					      		}
-					      	}
-					      >
-					        LoveStory
-					      </Checkbox>
+					       			this.setState({
+					       				movie:movie
+					       			});
+					       }}
 					      
+					      >Harry Potter</Checkbox>
+
+					      <Checkbox inline checked={this.state.movie['ben']===1}
+					       onClick={()=>{
+					       		var movie = this.state.movie;
+					       		if (movie['ben']===1)
+					       			movie['ben']=undefined;
+					       		else
+					       			movie['ben']=1;
+
+					       			this.setState({
+					       				movie:movie
+					       			});
+					       }}
+					      
+					      >Mr. Ben</Checkbox>
+					      <HelpBlock>{this.getClasses('movie')}</HelpBlock>
 					    </FormGroup>
 					    <FormGroup validationState={this.getClasses('food')} >
 					    <ControlLabel>Favorite food</ControlLabel>
